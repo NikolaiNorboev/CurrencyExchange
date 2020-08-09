@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTodayCurrency } from '../../redux/actions/data';
 import Options from '../main/Options';
-import newData from '../../service/hooks/newData';
 
 function MainPage() {
 
@@ -18,7 +17,6 @@ function MainPage() {
 
   return (
     <div>
-
       <h1>Main</h1>
       <Options />
     </div>

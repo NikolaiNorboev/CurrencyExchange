@@ -263,6 +263,8 @@ export default function EnhancedTable() {
         <TableContainer>
           <Table
             className={classes.table}
+            stickyHeader 
+            aria-label="sticky table"
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
@@ -317,7 +319,7 @@ export default function EnhancedTable() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10,{ value: -1, label: 'All' }]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
