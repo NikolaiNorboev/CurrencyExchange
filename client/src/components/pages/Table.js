@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { useSelector } from 'react-redux';
 
@@ -49,10 +50,10 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Название валюты' },
-  { id: 'charCode', numeric: true, disablePadding: false, label: 'CharCode' },
-  { id: 'nominal', numeric: true, disablePadding: false, label: 'Номинал' },
-  { id: 'value', numeric: true, disablePadding: false, label: 'Текущее значение' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Название валюты'},
+  { id: 'charCode', numeric: true, disablePadding: true, label: 'CharCode' },
+  { id: 'nominal', numeric: true, disablePadding: true, label: 'Номинал' },
+  { id: 'value', numeric: true, disablePadding: true, label: 'Текущее значение' },
 ];
 
 function EnhancedTableHead(props) {
@@ -141,7 +142,7 @@ const EnhancedTableToolbar = (props) => {
     >
       {numSelected > 0 ? (
         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
+          Выбранно валют: {numSelected} 
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
@@ -152,7 +153,7 @@ const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
-            <DeleteIcon />
+            <SaveIcon />
           </IconButton>
         </Tooltip>
       ) : (
@@ -263,8 +264,8 @@ export default function EnhancedTable() {
         <TableContainer>
           <Table
             className={classes.table}
-            stickyHeader 
-            aria-label="sticky table"
+            // stickyHeader 
+            // aria-label="sticky table"
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
