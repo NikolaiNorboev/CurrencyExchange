@@ -17,8 +17,10 @@ function MainPage() {
 
   return (
     <div>
-      <h1>Main</h1>
-      <Options />
+      <div>
+        <p>Main Page</p>
+      </div>
+      {/* <Options /> */}
     </div>
   )
 }
