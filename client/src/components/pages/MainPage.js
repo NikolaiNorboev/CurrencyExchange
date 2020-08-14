@@ -17,10 +17,7 @@ function MainPage() {
 
   return (
     <div>
-      <div>
-        <p>Main Page</p>
-      </div>
-      {/* <Options /> */}
+      <Options />
     </div>
   )
 }

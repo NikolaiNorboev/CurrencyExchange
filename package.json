@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/NikolaiNorboev/CurrencyExchange.git",
   "author": "Nikolai Norboev <gippich@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "cd server && yarn && yarn start",
+    "build": "cd client && yarn && yarn build"
+  }
 }

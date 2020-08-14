@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 function Graf() {
   const rows = useSelector(state => state.data.valute);
   const [valuteID, setValuteId] = useState('R01239');
+  const [index, setIndex] = useState(11);
   const [end, getEnd] = useState(moment().format('L'));
   const [start, getStart] = useState(moment().subtract(7, 'days').format('L'));
   const [chartOptions, setChartOptions] = useState({
@@ -82,28 +83,25 @@ function Graf() {
   const classes = useStyles();
 
   const handleChange = async (event) => {
-    setValuteId(event.target.value);
+    setIndex(event.target.value);
   };
 
   async function getData() {
+    const {id, nominal, name} = rows[index];
     const responce = await fetch('/api/history', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: valuteID,
+        id,
         start,
         end,
       }),
     });
     const json = await responce.json();
-    const index = rows.findIndex((row, index) => {
-      if (row.id === valuteID) {
-        return index
-      }
-    })
-    const textTitle = await `Курс обмена ${rows[index].nominal} ${rows[index].name} к Рублю с ${start} по ${end}`;
+    
+    const textTitle = await `Курс обмена ${nominal} ${name} к Рублю с ${start} по ${end}`;
     setChartOptions({
       title: {
         text: textTitle,
@@ -120,7 +118,7 @@ function Graf() {
 
   useLayoutEffect(() => {
     getData();
-  }, [valuteID, start, end])
+  }, [index, start, end])
 
   function handleStart(day) {
     getStart(moment().subtract(day, 'days').format('L'))
@@ -140,18 +138,18 @@ function Graf() {
         </ButtonGroup>
         <FormControl className={classes.formControl}>
           <Select
-            value={valuteID}
+            value={index}
             onChange={handleChange}
             displayEmpty
             className={classes.selectEmpty}
             inputProps={{ 'aria-label': 'Without label' }}
           >
             <MenuItem value="" disabled>
-              ВЫбор валюты
+              Выбор валюты
           </MenuItem>
-            {rows && rows.map(row => {
+            {rows && rows.map((row, index) => {
               return(
-              <MenuItem value={row.id}>{row.charCode}</MenuItem>
+              <MenuItem value={index}>{row.charCode}</MenuItem>
               )
             })}
           </Select>
