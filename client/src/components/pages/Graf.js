@@ -28,7 +28,7 @@ function Graf() {
   const rows = useSelector(state => state.data.valute);
   const [valuteID, setValuteId] = useState('R01239');
   const [end, getEnd] = useState(moment().format('L'));
-  const [start, getStart] = useState(moment().subtract(7, 'days').format('L'))
+  const [start, getStart] = useState(moment().subtract(7, 'days').format('L'));
   const [chartOptions, setChartOptions] = useState({
     chart: {
       zoomType: 'x'
@@ -36,16 +36,12 @@ function Graf() {
     title: {
       text: 'USD to EUR exchange rate over time'
     },
-    // subtitle: {
-    //     text: document.ontouchstart === undefined ?
-    //         'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-    // },
     xAxis: {
       type: 'datetime'
     },
     yAxis: {
       title: {
-        text: 'Exchange rate'
+        text: 'Курс обмена'
       }
     },
     legend: {
@@ -80,14 +76,12 @@ function Graf() {
 
     series: [{
       type: 'area',
-      name: 'USD to EUR',
-
     }]
-  })
+  });
 
   const classes = useStyles();
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     setValuteId(event.target.value);
   };
 
@@ -104,8 +98,16 @@ function Graf() {
       }),
     });
     const json = await responce.json();
-
+    const index = rows.findIndex((row, index) => {
+      if (row.id === valuteID) {
+        return index
+      }
+    })
+    const textTitle = await `Курс обмена ${rows[index].nominal} ${rows[index].name} к Рублю с ${start} по ${end}`;
     setChartOptions({
+      title: {
+        text: textTitle,
+      },
       xAxis: {
         categories: [...json.date],
       },
@@ -113,7 +115,9 @@ function Graf() {
         { data: [...json.valute] },
       ],
     })
+    
   }
+
   useLayoutEffect(() => {
     getData();
   }, [valuteID, start, end])
