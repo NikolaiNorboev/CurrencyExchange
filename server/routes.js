@@ -35,16 +35,16 @@ router.get('/today', async (req, resp) => {
 
 //получение динамики котировок валюты за период
 router.post('/history', async (req, resp) => {
-  const { id, start, end } = req.body;
+  const { id, startDate, endDate } = req.body;
   try {
-    http.get(`http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=${start}&date_req2=${end}&VAL_NM_RQ=${id}`, await function (res) {
+    http.get(`http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=${startDate}&date_req2=${endDate}&VAL_NM_RQ=${id}`, await function (res) {
       res.pipe(iconv.decodeStream('cp1251')).collect(function (err, decodedBody) {
         parseString(decodedBody, function (err, result) {
           const valute = [];
           const date = [];
           const info = {// Для заполнения легенды и титула
-            start: result.ValCurs.$.DateRange1,
-            end: result.ValCurs.$.DateRange2,
+            startDate: result.ValCurs.$.DateRange1,
+            endDate: result.ValCurs.$.DateRange2,
             id: result.ValCurs.$.ID,
           };
           result.ValCurs.Record.map(member => {

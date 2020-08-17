@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { indexDefault } from '../../redux/actions/graf';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -63,12 +65,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavTabs() {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    dispatch(indexDefault());
+  }, [value])
 
   return (
     <div className={classes.root}>

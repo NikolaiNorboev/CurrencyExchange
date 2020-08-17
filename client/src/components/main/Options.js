@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import SelectValute from '../graf/SelectValute';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
@@ -27,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
 
 function Options() {
   const rows = useSelector(state => state.data.valute);
-  const [rub, setRub] = useState();
-  const [val, setVal] = useState();
-  const [valuteIndex, setValuteIndex] = useState(11);
+  const [rub, setRub] = useState(0);
+  const [val, setVal] = useState(0);
+  const {index} = useSelector(state => state.graf);
   const classes = useStyles();
   
   function change(rev, e = rub) {
-    const {nominal, value} = rows[valuteIndex];
-    if(rev == 'rub' && e != 0){
+    const {nominal, value} = rows[index];
+    if(rev == 'rub' && e !== ''){
       setVal(((e * nominal) /  value).toFixed(2))
     } else if(rev == 'val'){
       setRub(((e / nominal) * value).toFixed(2))
@@ -43,17 +44,17 @@ function Options() {
   
   const handleChangeRub = (e) => {
     setRub(e.target.value);
-    // setTimeout(change('rub',), 12)
     change('rub', e.target.value);
   }
-  const handleChangeVar = async (event) => {
-    setValuteIndex(event.target.value);
-    change('rub');
-  };
+  
   const handleChangeVal = (e) => {
     setVal(e.target.value);
     change('val', e.target.value);
   }
+
+  useEffect(() => {
+    change('rub')
+  },[index])
 
   return (
     <Grid
@@ -67,37 +68,17 @@ function Options() {
           label="Сумма в рублях"
           id="outlined-size-normal"
           variant="outlined"
-          // placeholder="Placeholder"
           value={rub}
           onChange={handleChangeRub}
           InputProps={{
             startAdornment: <InputAdornment position="start"></InputAdornment>,
           }}
         />
-        <FormControl className={classes.formControl}>
-          <Select
-            value={valuteIndex}
-            onChange={handleChangeVar}
-            displayEmpty
-            className={classes.selectEmpty}
-            inputProps={{ 'aria-label': 'Without label' }}
-          >
-            <MenuItem value="" disabled>
-              Выбор валюты
-          </MenuItem>
-            {rows && rows.map((row, index) => {
-              return (
-                <MenuItem value={index}>{row.charCode}</MenuItem>
-              )
-            })}
-          </Select>
-          <FormHelperText>ВЫбор валюты</FormHelperText>
-        </FormControl>
+        <SelectValute/>
         <TextField
           label="Сумма в валюте"
           id="outlined-size-normal"
           variant="outlined"
-          // placeholder="Placeholder"
           value={val}
           onChange={handleChangeVal}
           InputProps={{
