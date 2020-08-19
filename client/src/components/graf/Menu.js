@@ -10,8 +10,8 @@ import { format, subDays } from 'date-fns'
 
 export default function Menu() {
   const dispatch = useDispatch();
-  function handleStart(num) {
-    dispatch(setEndAndStart({
+  async function handleStart(num) {
+    await dispatch(setEndAndStart({
       startDate: format(subDays(new Date(), num), 'dd/MM/yyyy'), 
       endDate: format(new Date(), 'dd/MM/yyyy')
     }))

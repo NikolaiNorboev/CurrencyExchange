@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -178,8 +179,6 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -250,7 +249,7 @@ export default function EnhancedTable() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10,{ value: -1, label: 'All' }]}
+          rowsPerPageOptions={[5, 10,{ value: -1, label: 'Все' }]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
@@ -261,9 +260,9 @@ export default function EnhancedTable() {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label="Уменьшить таблицу"
       />
-      <button onClick={() => save()}>Download</button>
+      <Button onClick={() => save()}>Выгрузить данные</Button>
     </div>
   );
 }

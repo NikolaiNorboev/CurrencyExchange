@@ -4,12 +4,14 @@ import Menu from '../graf/Menu';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import FileSaver from 'file-saver';
+import Button from '@material-ui/core/Button';
 
 export default function Graf() {
   
   const data = useSelector(state => state.data);
   const rows = data.valute;
   const {index, startDate, endDate} = useSelector(state => state.graf);
+  const [title, setTitle] = useState();
   const [json, setJson] = useState({
     info: { startDate: '11.08.2020', endDate: '18.08.2020', id: 'R01239' },
     data: [
@@ -71,11 +73,11 @@ export default function Graf() {
     }]
   });
 
-  async function getData() {
+  function getData() {
     const { id, nominal, name } = rows[index];
 
     if( startDate && endDate ) {
-      const responce = await fetch('/api/data', 
+      fetch('/api/data', 
       {
         method: 'POST',
         headers: {
@@ -87,28 +89,29 @@ export default function Graf() {
           endDate,
         }),
       }
-      );
-
-      setJson(await responce.json());
-  
-      const textTitle = await `Курс обмена ${nominal} ${name} к Рублю с ${startDate} по ${endDate}`;
-      
-      setChartOptions({
-        title: {
-          text: textTitle,
-        },
-        xAxis: {
-          categories: json.data.map(row => {return row.date}),
-        },
-        series: [
-          { data: json.data.map(row => {return row.value}) },
-        ],
+      )
+      .then( responce => responce.json())
+      .then( result => {
+        setJson(result);
+        const text = `Курс обмена ${nominal} ${name} к Рублю с ${startDate} по ${endDate}`
+        setTitle(text);
+        setChartOptions({
+          title: {
+            text: text,
+          },
+          xAxis: {
+            categories: result.data.map(row => {return row.date}),
+          },
+          series: [
+            { data: result.data.map(row => {return row.value}) },
+          ],
+        })
       })
     }
   }
   
   useEffect(() => { 
-      getData()
+    getData()
   }, [index, startDate, endDate])
 
   useEffect(() => {  
@@ -118,7 +121,7 @@ export default function Graf() {
   function save() {
     const json2 = JSON.stringify(json)
     const blob = new Blob([json2], {type: "text/plain;charset=utf-8"});
-    FileSaver.saveAs(blob, "test2.json");
+    FileSaver.saveAs(blob, `${title}.json`);
   }
 
   return (
@@ -130,7 +133,7 @@ export default function Graf() {
         constructorType={"chart"}
         options={chartOptions}
       />
-      <button onClick={() => save()}>Download</button>
+      <Button onClick={() => save()}>Выгрузить данные</Button>
     </>
   )
 }
