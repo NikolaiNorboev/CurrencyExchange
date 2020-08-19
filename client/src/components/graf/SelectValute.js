@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SelectValute() {
   const dispatch = useDispatch();
-  const rows = useSelector(state => state.data.valute);
+  const data = useSelector(state => state.data);
+  const rows = data.valute;
   const index = useSelector(state => state.graf.index);
   const classes = useStyles();
   

@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Main from './MainPage';
 import Table from './Table';
 import Graf from './Graf';
+import Admin from './Admin'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -22,7 +23,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={4}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -82,6 +83,7 @@ export default function NavTabs() {
           <LinkTab label="Home" {...a11yProps(0)} />
           <LinkTab label="Таблица курсов" {...a11yProps(1)} />
           <LinkTab label="График изменеия курсов" {...a11yProps(2)} />
+          <LinkTab label="Настройка приложения" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -92,6 +94,9 @@ export default function NavTabs() {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Graf/>
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        <Admin/>
       </TabPanel>
     </div>
   );
