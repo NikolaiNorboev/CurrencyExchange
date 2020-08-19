@@ -1,12 +1,9 @@
 import React, { useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { setStart, setEnd } from '../../redux/actions/graf';
-import DatePicker, { registerLocale } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import { format } from 'date-fns'
-import ru from 'date-fns/locale/ru';
 import "react-datepicker/dist/react-datepicker.css";
-
-registerLocale('ru', ru)
 
 export default function Calendar() {
   const dispatch = useDispatch();
@@ -24,7 +21,7 @@ export default function Calendar() {
   return (
     <div>
       <DatePicker
-        locale="ru-RU"
+        locale="ru"
         selected={startDateCalendar}
         onChange={date => setStartDate(date)}
         selectsStart
