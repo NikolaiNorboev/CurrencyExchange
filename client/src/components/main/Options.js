@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SelectValute from '../graf/SelectValute';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -35,9 +31,9 @@ function Options() {
   
   function change(rev, e = rub) {
     const {nominal, value} = rows[index];
-    if(rev == 'rub' && e !== ''){
+    if(rev === 'rub' && e !== ''){
       setVal(((e * nominal) /  value).toFixed(2))
-    } else if(rev == 'val'){
+    } else if(rev === 'val'){
       setRub(((e / nominal) * value).toFixed(2))
     } 
   }

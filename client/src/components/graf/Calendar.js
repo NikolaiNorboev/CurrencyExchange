@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { setStart, setEnd } from '../../redux/actions/graf';
 import DatePicker, { registerLocale } from "react-datepicker";
-import { format, subDays } from 'date-fns'
+import { format } from 'date-fns'
 import ru from 'date-fns/locale/ru';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -24,10 +24,11 @@ export default function Calendar() {
   return (
     <div>
       <DatePicker
-        locale="ru"
+        locale="ru-RU"
         selected={startDateCalendar}
         onChange={date => setStartDate(date)}
         selectsStart
+        dateFormat="dd/MM/yyyy"
         startDate={startDateCalendar}
         endDate={endDateCalendar}
         peekNextMonth
@@ -40,9 +41,11 @@ export default function Calendar() {
         selected={endDateCalendar}
         onChange={date => setEndDate(date)}
         selectsEnd
+        dateFormat="dd/MM/yyyy"
         startDate={startDateCalendar}
         endDate={endDateCalendar}
         minDate={startDateCalendar}
+        maxDate={new Date()}
         peekNextMonth
         showMonthDropdown
         showYearDropdown

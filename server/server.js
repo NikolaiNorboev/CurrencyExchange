@@ -1,5 +1,5 @@
 const express = require('express');
-// const mongo = require('./mongo.js');
+const mongo = require('./mongo.js');
 const sequelise = require('./sequelize')
 const router = require('./routes');
 

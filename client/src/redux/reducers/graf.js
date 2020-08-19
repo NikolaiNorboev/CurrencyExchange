@@ -1,6 +1,6 @@
-import { SETINDEX, INDEXDEFAULT, SETSTART, SETEND } from '../actionsType';
+import { SETINDEX, SETSTART, SETEND, SETENDANDSTART } from '../actionsType';
 
-export default (state = {index: 11}, action) => {
+export default (state = {index: 10}, action) => {
   switch (action.type) {
     case SETINDEX:
       return { ...state, index: action.num };
@@ -8,8 +8,11 @@ export default (state = {index: 11}, action) => {
       return { ...state, startDate: action.str };
     case SETEND:
       return { ...state, endDate: action.str };
-    case INDEXDEFAULT:
-      return { ...state, index: 11 };
+    case SETENDANDSTART:
+      return {
+        ...state,  
+        ...action.obj
+      }
     default:
       return state;
   }

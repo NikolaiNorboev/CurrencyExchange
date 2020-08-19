@@ -1,14 +1,26 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Menu from '../graf/Menu';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
-
+import FileSaver from 'file-saver';
 
 export default function Graf() {
   
-  const rows = useSelector(state => state.data.valute);
+  const data = useSelector(state => state.data);
+  const rows = data.valute;
   const {index, startDate, endDate} = useSelector(state => state.graf);
+  const [json, setJson] = useState({
+    info: { startDate: '11.08.2020', endDate: '18.08.2020', id: 'R01239' },
+    data: [
+      { date: '11.08.2020', value: '86.8258' },
+      { date: '12.08.2020', value: '85.9246' },
+      { date: '13.08.2020', value: '85.9560' },
+      { date: '14.08.2020', value: '87.0399' },
+      { date: '15.08.2020', value: '86.4092' },
+      { date: '18.08.2020', value: '86.4666' }
+    ]
+  });
   const [chartOptions, setChartOptions] = useState({
     chart: {
       zoomType: 'x'
@@ -61,8 +73,10 @@ export default function Graf() {
 
   async function getData() {
     const { id, nominal, name } = rows[index];
+
     if( startDate && endDate ) {
-      const responce = await fetch('/api/history', {
+      const responce = await fetch('/api/data', 
+      {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,29 +86,41 @@ export default function Graf() {
           startDate,
           endDate,
         }),
-      });
-      const json = await responce.json();
+      }
+      );
+
+      setJson(await responce.json());
   
       const textTitle = await `Курс обмена ${nominal} ${name} к Рублю с ${startDate} по ${endDate}`;
+      
       setChartOptions({
         title: {
           text: textTitle,
         },
         xAxis: {
-          categories: [...json.date],
+          categories: json.data.map(row => {return row.date}),
         },
         series: [
-          { data: [...json.valute] },
+          { data: json.data.map(row => {return row.value}) },
         ],
       })
     }
   }
   
-  useLayoutEffect(() => {
-    getData();
+  useEffect(() => { 
+      getData()
   }, [index, startDate, endDate])
 
- 
+  useEffect(() => {  
+    getData()
+  }, [])
+
+  function save() {
+    const json2 = JSON.stringify(json)
+    const blob = new Blob([json2], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "test2.json");
+  }
+
   return (
     <>
       <Menu/>
@@ -104,6 +130,7 @@ export default function Graf() {
         constructorType={"chart"}
         options={chartOptions}
       />
+      <button onClick={() => save()}>Download</button>
     </>
   )
 }

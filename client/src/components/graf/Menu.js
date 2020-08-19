@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setStart, setEnd } from '../../redux/actions/graf';
+import { setEndAndStart } from '../../redux/actions/graf';
 import Calendar from '../graf/Calendar';
 import SelectValute from '../graf/SelectValute';
 import Button from '@material-ui/core/Button';
@@ -11,13 +11,11 @@ import { format, subDays } from 'date-fns'
 export default function Menu() {
   const dispatch = useDispatch();
   function handleStart(num) {
-    dispatch(setStart(format(subDays(new Date(), num), 'dd/MM/yyyy')))
+    dispatch(setEndAndStart({
+      startDate: format(subDays(new Date(), num), 'dd/MM/yyyy'), 
+      endDate: format(new Date(), 'dd/MM/yyyy')
+    }))
   }
-
-  useEffect(() => {
-    dispatch(setEnd(format(new Date(), 'dd/MM/yyyy')))
-    dispatch(setStart(format(subDays(new Date(), 7), 'dd/MM/yyyy')))
-  }, [])
 
   return (
     <Grid

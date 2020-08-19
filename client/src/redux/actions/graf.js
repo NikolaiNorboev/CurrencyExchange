@@ -1,15 +1,9 @@
-import { SETINDEX, INDEXDEFAULT, SETSTART, SETEND } from '../actionsType';
+import { SETINDEX, SETSTART, SETEND, SETENDANDSTART } from '../actionsType';
 
 export function setIndex (num) {
   return {
     type: SETINDEX,
     num,
-  }
-}
-
-export function indexDefault () {
-  return {
-    type: INDEXDEFAULT,
   }
 }
 
@@ -24,5 +18,12 @@ export function setEnd (str) {
   return {
     type: SETEND,
     str,
+  }
+}
+
+export function setEndAndStart (obj) {
+  return {
+    type: SETENDANDSTART,
+    obj,
   }
 }
