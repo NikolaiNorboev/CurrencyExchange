@@ -1,0 +1,1 @@
+{"url1":"http://www.cbr.ru/scripts/XML_daily.asp?","url2":"http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=startDate&date_req2=endDate&VAL_NM_RQ=id","db_connect":"mongodb://localhost:27017/currency"}

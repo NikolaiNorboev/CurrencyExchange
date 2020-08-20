@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const config = require('./config.json');
+
 
 mongoose.connect(
-  'mongodb://localhost:27017/currency',
+  config.db_connect,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

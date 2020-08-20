@@ -1,5 +1,7 @@
 const express = require('express');
-const { parser, info, change } = require('./parser');
+const { parser } = require('./parser');
+const config = require('./config.json');
+const fs = require("fs");
 
 const router = express.Router();
 
@@ -9,8 +11,8 @@ router
     const { date } = req.query;
     // const data
     try {
-      if(date){
-        data = await parser(0, date);  
+      if (date) {
+        data = await parser(0, date);
       } else {
         data = await parser(0);
       }
@@ -35,14 +37,22 @@ router
   .route('/admin')
   .get((req, res) => {
     try {
-      res.send(info())
+      res.send(config)
     } catch (e) {
       console.log(e);
       res.send(e)
     }
   })
   .post((req, res) => {
+    const newConfig = req.body.formControl;
+    const json = JSON.stringify(newConfig)
     try {
+      fs.writeFile("config.json", json, 'utf8', (error) => {
+        if (error) throw error; 
+        const data = fs.readFileSync("config.json", "utf8");
+        console.log('config in fs: ',data);
+      })
+      console.log('config in module: ', config);
       res.end()
     } catch (e) {
       console.log(e);
